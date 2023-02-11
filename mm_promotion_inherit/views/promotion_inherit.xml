@@ -1,0 +1,121 @@
+<odoo>
+    <data>
+        <record id="view_coupon_program_form_inherit" model="ir.ui.view">
+            <field name="name">coupon.program.form.inherit</field>
+            <field name="model">coupon.program</field>
+            <field name="inherit_id" ref="coupon.coupon_program_view_promo_program_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='reward_product_id']" position="after">
+                    <field name="product_categ_id" attrs="{'invisible': [('reward_type', '!=', 'category')], 'required': [('reward_type', '=', 'category')]}" />
+                    <!--<field name="product_category_id"  attrs="{'invisible': [('reward_type', '!=', 'category')] , 'required': [('reward_type', '=', 'category')]}"/>-->
+                    <field name="category_quantity"  attrs="{'invisible': ['|', ('reward_type', '!=', 'category'), ('product_categ_id', '=',False)]}"/>
+                </xpath>
+                <xpath expr="//field[@name='reward_product_id']" position="attributes">
+                     <attribute name="attrs">{'invisible': [('reward_type', 'in', ('discount', 'free_shipping', 'category'))], 'required': [('reward_type', '=', 'product')]}</attribute>
+                </xpath>
+                <xpath expr="//label[@for='reward_product_quantity']" position="attributes">
+                     <attribute name="attrs">{'invisible': ['|', ('reward_type', 'in', ('discount', 'free_shipping', 'category')), ('reward_product_id', '=',False)]}</attribute>
+                </xpath>
+                <xpath expr="//group[3]//div[1]" position="attributes">
+                     <attribute name="attrs">{'invisible': ['|', ('reward_type', 'in', ('discount', 'free_shipping', 'category')),('reward_product_id', '=',False)]}</attribute>
+                </xpath>
+                <xpath expr="//label[@for='discount_type']" position="attributes">
+                     <attribute name="attrs">{'invisible': [('reward_type', 'in', ('product', 'free_shipping', 'category'))]}</attribute>
+                </xpath>
+                <xpath expr="//group[3]//div[2]" position="attributes">
+                     <attribute name="attrs">{'invisible': [('reward_type', 'in', ('product', 'free_shipping', 'category'))]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='discount_apply_on']" position="attributes">
+                     <attribute name="attrs">{'invisible': ['|', ('reward_type', 'in', ('product', 'free_shipping', 'category')), ('discount_type', '!=', 'percentage')]}</attribute>
+                </xpath>
+                <xpath expr="//label[@for='discount_max_amount']" position="attributes">
+                     <attribute name="attrs">{'invisible': ['|', ('reward_type', 'in', ('product', 'free_shipping', 'category')), ('discount_type', '!=', 'percentage')]}</attribute>
+                </xpath>
+                <xpath expr="//group[3]//div[4]" position="attributes">
+                     <attribute name="attrs">{'invisible': ['|', ('reward_type', 'in', ('product', 'free_shipping', 'category')), ('discount_type', '!=', 'percentage')]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='discount_apply_on']" position="replace">
+                    <field name="discount_apply_on" attrs="{'invisible':
+                            ['|', ('reward_type', 'in', ('product', 'free_shipping')), ('discount_type', '!=', 'percentage')]}" widget="radio"/>
+                </xpath>
+                <xpath expr="//field[@name='reward_product_id']" position="after">
+                    <field name="discount_on" required="True" attrs="{'invisible': [('reward_type', '!=', 'discount'), ('discount_apply_on', '!=', 'on_order_line')]}" />
+                </xpath>
+                <xpath expr="//field[@name='promo_applicability']" position="after">
+                    <field name="line_applicability" widget="radio" required="True"/>
+                </xpath>
+<!--                <xpath expr="//group[3]//div[2]" position="attributes">
+                     <attribute name="invisible">1</attribute>
+                </xpath>-->
+            </field>
+        </record>
+
+        <record id="view_coupon_program_form_inherit2" model="ir.ui.view">
+            <field name="name">coupon.program.form.inherit</field>
+            <field name="model">coupon.program</field>
+            <field name="inherit_id" ref="coupon.coupon_program_view_form_common"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='rule_products_domain']" position="before">
+                    <field name="promotion_type" widget="radio"/>
+                </xpath>
+
+                <xpath expr="//field[@name='rule_products_domain']" position="attributes">
+                     <attribute name="attrs">{'invisible': [('promotion_type', '!=', 'by_domain')]}</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='rule_products_domain']" position="after">
+                    <label for="category_id" string="Category" attrs="{'invisible': [('promotion_type', '!=', 'by_category')]}"/>
+                    <div class="o_row" attrs="{'invisible': [('promotion_type', '!=', 'by_category')]}">
+                        <field name="category_id" force_save="1" />
+                        <strong class="mr8">Min Quantity</strong>
+                        <field name="category_qty"/>
+                        <strong class="mr8">Max Quantity</strong>
+                        <field name="max_category_qty"/>
+                    </div>
+                    <label for="category_id2" string="Category" attrs="{'invisible': [('promotion_type', '!=', 'by_category')]}"/>
+                    <div class="o_row" attrs="{'invisible': [('promotion_type', '!=', 'by_category')]}">
+                        <field name="category_id2" force_save="1"/>
+                        <strong class="mr8">Min Quantity </strong>
+                        <field name="category_qty2"/>
+                        <strong class="mr8">Max Quantity</strong>
+                        <field name="max_category_qty2"/>
+                    </div>
+                    <label for="category_id3" string="Category" attrs="{'invisible': [('promotion_type', '!=', 'by_category')]}"/>
+                    <div class="o_row" attrs="{'invisible': [('promotion_type', '!=', 'by_category')]}">
+                        <field name="category_id3" force_save="1"/>
+                        <strong class="mr8">Min Quantity </strong>
+                        <field name="category_qty3"/>
+                        <strong class="mr8">Max Quantity</strong>
+                        <field name="max_category_qty3"/>
+                    </div>
+                </xpath>
+                <xpath expr="//field[@name='rule_min_quantity']" position="attributes">
+                     <attribute name="attrs">{'invisible': [('promotion_type', '!=', 'by_domain')]}</attribute>
+                </xpath>
+                <xpath expr="//label[@for='rule_min_quantity']" position="attributes">
+                     <attribute name="attrs">{'invisible': [('promotion_type', '!=', 'by_domain')]}</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_sale_order_form_inherit3" model="ir.ui.view">
+            <field name="name">sale.order.form.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale_coupon.sale_order_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='recompute_coupon_lines']" position="attributes">
+                    <attribute name="invisible">0</attribute>
+                </xpath>
+<!--                <xpath expr="//button[@name='recompute_coupon_lines']" position="after">
+                    <button name="recompute_coupon_lines_wiz" class="btn btn-secondary" string="Promotions"
+                            type="object"/>
+                </xpath>-->
+                <xpath expr="//button[@name='recompute_coupon_lines']" position="after">
+                    <button name="clear_discounts" class="btn btn-secondary" string="Clear all Discounts"
+                            type="object"/>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="get_data_wizard_from_view" model="ir.ui.view">
+        <field name="name">get.data.wizard.from.view</field>
+        <field name="model">get.data.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Change Notification data">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="coupon_program_id"/>
+                        </group>
+                        <group>
+                            <field name="hide_field" invisible="1"/>
+                            <field name="product_category_id" attrs="{'invisible': [('hide_field', '=', True)]}"/>
+                        </group>
+                    </group>
+                </sheet>
+                 <footer>
+                      <button name="action_get_data" string="Yas GET" type="object" class="btn-primary"/>
+                      <button string="Cancel" class="btn-default" special="cancel" />
+                  </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_get_data_wizard" model="ir.actions.act_window">
+        <field name="name">Get Data</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">get.data.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="get_data_wizard_from_view"/>
+        <field name="target">new</field>
+    </record>
+
+
+</odoo>
